@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>persist</module>
         <module>rs-api</module>
         <module>rs</module>
     </modules>
