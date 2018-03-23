@@ -1,0 +1,133 @@
+swagger: "2.0"
+info:
+  description: "This is a sample application for retail store."
+  version: "1.0.0"
+  title: "MyRetail store"
+  termsOfService: "Terms and Conditions"
+  contact:
+    email: "it@myretail.com"
+  license:
+    name: "All rights reserved"
+    url: "http://www.myretail.com/LICENSE-2.0.html"
+host: "myretail.com"
+basePath: "/v1"
+tags:
+- name: "product"
+  description: "Everything about our Products"
+  externalDocs:
+    description: "Find out more"
+    url: "http://myretail.com"
+    
+paths:
+  /product/{id}:
+    get:
+      tags:
+      - "product"
+      summary: "Find product by ID"
+      description: "Returns a single product"
+      operationId: "getProductById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of product to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: "Invalid ID supplied"
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: "Product not found"
+          schema:
+            $ref: "#/definitions/Product"
+    post:
+      tags:
+      - "product"
+      summary: "Updates a product in the store with price data"
+      description: ""
+      operationId: "updateProductWithPrice"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of product that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: Product
+        in: body
+        required: true
+        description: product to return information for
+        schema:
+          $ref: '#/definitions/RepoProduct'
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: "Invalid ID supplied"
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: "Product not found"
+          schema:
+            $ref: "#/definitions/Product"
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Product"
+
+definitions:
+  RepoProduct:
+    type: "object"
+    properties:
+      id:
+       type: "integer"
+       format: "int64"
+      currentPrice:
+       $ref: '#/definitions/Price'
+  Product:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      currentPrice:
+        $ref: '#/definitions/Price'
+      errorResponse:
+        $ref: '#/definitions/ErrorResponse'
+  Price:
+    type: "object"
+    properties:
+      value:
+        type: number
+        format: double
+      currencyCode:
+        type: string
+  ErrorResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about myRetail store"
+  url: "http://myretail.com"
