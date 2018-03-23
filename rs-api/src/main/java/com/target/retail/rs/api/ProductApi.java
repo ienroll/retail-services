@@ -48,7 +48,7 @@ public interface ProductApi {
     @RequestMapping(value = "/product/{id}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
-        method = RequestMethod.POST)
+        method = RequestMethod.PUT)
     default ResponseEntity<Product> updateProductWithPrice(
 @ApiParam(value = "ID of product that needs to be updated",required=true ) @PathVariable("id") Long id
 

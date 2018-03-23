@@ -48,7 +48,7 @@ paths:
           description: "Product not found"
           schema:
             $ref: "#/definitions/Product"
-    post:
+    put:
       tags:
       - "product"
       summary: "Updates a product in the store with price data"
