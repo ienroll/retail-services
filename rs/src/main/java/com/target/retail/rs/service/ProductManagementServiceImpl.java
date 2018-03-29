@@ -1,11 +1,7 @@
 package com.target.retail.rs.service;
 
 import com.target.retail.rs.dao.ProductDao;
-import com.target.retail.rs.model.ErrorResponse;
-import com.target.retail.rs.model.Price;
-import com.target.retail.rs.model.Product;
-import com.target.retail.rs.model.ProductEntity;
-import com.target.retail.rs.model.RepoProduct;
+import com.target.retail.rs.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +23,7 @@ public class ProductManagementServiceImpl implements ProductManagementService {
         ProductEntity product1 = productDao.findById(id);
         Product product = new Product();
         if(product1==null){
-            product.setErrorResponse(buildErrorResponse(400,"ERROR","Invalid ID supplied"));
+            product.setResponse(buildResponse(400,"ERROR","Invalid ID supplied"));
 
         }else {
             product.setId(product1.getId());
@@ -37,20 +33,21 @@ public class ProductManagementServiceImpl implements ProductManagementService {
             product.setCurrentPrice(price);
             String productName = redSkyService.getProductName(id);
             if(productName ==null){
-                product.setErrorResponse(buildErrorResponse(400,"ERROR","Product Not Found at red sky"));
+                product.setResponse(buildResponse(200,"WARN","Unable to get product name from red sky"));
             }else{
+                product.setResponse(buildResponse(200,"INFO",""));
                 product.setName(productName);
             }
         }
         return product;
     }
 
-    private ErrorResponse buildErrorResponse(int code, String type, String message) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.code(code);
-        errorResponse.type(type);
-        errorResponse.message(message);
-        return errorResponse;
+    private Response buildResponse(int code, String type, String message) {
+        Response response = new Response();
+        response.code(code);
+        response.type(type);
+        response.message(message);
+        return response;
     }
 
     private boolean insert(RepoProduct product) {
@@ -79,19 +76,23 @@ public class ProductManagementServiceImpl implements ProductManagementService {
             ProductEntity product1 = productDao.findById(product.getId());
             if (product1 == null) {
                 if (insert(product))
-                    p.setErrorResponse(buildErrorResponse(200, "INFO", "New Product Inserted"));
+                    p.setResponse(buildResponse(200, "INFO", "New Product Inserted"));
                 else
-                    p.setErrorResponse(buildErrorResponse(400, "ERROR", "Product Insertion failed"));
+                    p.setResponse(buildResponse(500, "ERROR", "Product Insertion failed due to internal error"));
             } else {
                 product1.setCurrency(price.getCurrencyCode());
                 product1.setPrice(price.getValue());
                 productDao.save(product1);
-                p.setErrorResponse(buildErrorResponse(200, "INFO", "Product Updated"));
+                p.setResponse(buildResponse(200, "INFO", "Product Price Updated"));
             }
-            p.setName(redSkyService.getProductName(product.getId()));
+            String productName = redSkyService.getProductName(product.getId());
+            if(productName == null){
+                p.setResponse(buildResponse(200, "WARN", "Unable to get product name from red sky"));
+            }
+            p.setName(productName);
         }catch(Exception e){
             logger.error("Error updating Product with id = {}",product.getId(),e);
-            p.setErrorResponse(buildErrorResponse(500, "INFO", "Product Not Updated due to internal error"));
+            p.setResponse(buildResponse(500, "ERROR", "Product Not Updated due to internal error"));
         }
         return p;
     }

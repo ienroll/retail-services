@@ -24,8 +24,7 @@ public interface ProductApi {
     @ApiOperation(value = "Find product by ID", notes = "Returns a single product", response = Product.class, tags={ "product", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Product.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Product.class),
-        @ApiResponse(code = 404, message = "Product not found", response = Product.class) })
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Product.class) })
     @RequestMapping(value = "/product/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
@@ -42,9 +41,7 @@ public interface ProductApi {
     @ApiOperation(value = "Updates a product in the store with price data", notes = "", response = Product.class, tags={ "product", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Product.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Product.class),
-        @ApiResponse(code = 404, message = "Product not found", response = Product.class),
-        @ApiResponse(code = 405, message = "Invalid input", response = Product.class) })
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Product.class) })
     @RequestMapping(value = "/product/{id}",
         produces = { "application/json" }, 
         consumes = { "application/json" },

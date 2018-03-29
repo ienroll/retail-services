@@ -1,6 +1,5 @@
 package com.target.retail.rs.service
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
@@ -33,7 +32,7 @@ class RedSkyServiceSpec  extends Specification {
         redSkyService.restTemplate._(*_)  >> {lines.get(0)}
         String productName  = redSkyService.getProductName(id)
 
-        then: "we should get 200 response"
+        then: "we should get product name"
         assertNotNull(productName)
 
     }

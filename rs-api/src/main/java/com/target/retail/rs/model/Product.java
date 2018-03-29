@@ -3,8 +3,8 @@ package com.target.retail.rs.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.target.retail.rs.model.ErrorResponse;
 import com.target.retail.rs.model.Price;
+import com.target.retail.rs.model.Response;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -22,7 +22,7 @@ public class Product   {
 
   private Price currentPrice = null;
 
-  private ErrorResponse errorResponse = null;
+  private Response response = null;
 
   public Product id(Long id) {
     this.id = id;
@@ -78,22 +78,22 @@ public class Product   {
     this.currentPrice = currentPrice;
   }
 
-  public Product errorResponse(ErrorResponse errorResponse) {
-    this.errorResponse = errorResponse;
+  public Product response(Response response) {
+    this.response = response;
     return this;
   }
 
    /**
-   * Get errorResponse
-   * @return errorResponse
+   * Get response
+   * @return response
   **/
   @ApiModelProperty(value = "")
-  public ErrorResponse getErrorResponse() {
-    return errorResponse;
+  public Response getResponse() {
+    return response;
   }
 
-  public void setErrorResponse(ErrorResponse errorResponse) {
-    this.errorResponse = errorResponse;
+  public void setResponse(Response response) {
+    this.response = response;
   }
 
 
@@ -109,12 +109,12 @@ public class Product   {
     return Objects.equals(this.id, product.id) &&
         Objects.equals(this.name, product.name) &&
         Objects.equals(this.currentPrice, product.currentPrice) &&
-        Objects.equals(this.errorResponse, product.errorResponse);
+        Objects.equals(this.response, product.response);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, currentPrice, errorResponse);
+    return Objects.hash(id, name, currentPrice, response);
   }
 
   @Override
@@ -125,7 +125,7 @@ public class Product   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    currentPrice: ").append(toIndentedString(currentPrice)).append("\n");
-    sb.append("    errorResponse: ").append(toIndentedString(errorResponse)).append("\n");
+    sb.append("    response: ").append(toIndentedString(response)).append("\n");
     sb.append("}");
     return sb.toString();
   }

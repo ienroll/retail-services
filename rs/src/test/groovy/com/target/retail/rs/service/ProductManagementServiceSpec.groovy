@@ -6,16 +6,10 @@ import com.target.retail.rs.model.Product
 import com.target.retail.rs.model.ProductEntity
 import com.target.retail.rs.model.RepoProduct
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.nio.file.Files
-import java.nio.file.Paths
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
+import static org.junit.Assert.*
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 
 @SpringBootTest(webEnvironment = NONE)
@@ -59,8 +53,8 @@ class ProductManagementServiceSpec extends Specification{
 
         then: "we should get display product"
         assertNotNull(product)
-        assertEquals(400,product.getErrorResponse().getCode())
-        assertEquals("Invalid ID supplied",product.getErrorResponse().getMessage())
+        assertEquals(400,product.getResponse().getCode())
+        assertEquals("Invalid ID supplied",product.getResponse().getMessage())
 
     }
 
@@ -75,11 +69,11 @@ class ProductManagementServiceSpec extends Specification{
         productDao.findById(_) >>{pe}
         Product product  = productManagementService.getProduct(id)
 
-        then: "we should get display product"
+        then: "we should not get product name"
         assertNotNull(product)
         assertEquals(id,product.getId())
-        assertEquals(400,product.getErrorResponse().getCode())
-        assertEquals("Product Not Found at red sky",product.getErrorResponse().getMessage())
+        assertEquals(200,product.getResponse().getCode())
+        assertEquals("Unable to get product name from red sky",product.getResponse().getMessage())
 
     }
 
@@ -105,7 +99,7 @@ class ProductManagementServiceSpec extends Specification{
         assertNotNull(product)
         assertEquals(id,product.getId())
         assertNull(product.getName())
-        assertEquals(200,product.getErrorResponse().getCode())
+        assertEquals(200,product.getResponse().getCode())
 
         assertNotNull(product1)
         assertEquals(id,product1.getId())
